@@ -1,0 +1,19 @@
+{
+  "name": "pptussdoverlaud",
+  "version": "1.0.0",
+  "description": "",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "express": "^4.17.1",
+    "generate-serial-number": "0.0.3",
+    "nodemon": "^2.0.7",
+    "unirest": "^0.6.0",
+    "ussd-menu-builder": "^1.2.0"
+  }
+}
