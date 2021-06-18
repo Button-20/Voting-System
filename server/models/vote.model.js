@@ -1,32 +1,16 @@
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-var Dues = mongoose.model('Dues', {
-    classname: { type: String, ref: 'User' },
-    userid: {
-        type: String,
-        ref: 'User',
-        required: 'User ID can\'t be empty'
+var Vote = mongoose.model('Vote', {
+    name:{
+        type: Schema.Types.ObjectId,
+        ref: 'Contestant',
+        require: true
     },
-    membername: {
-        type: String,
-        ref: 'Member',
-        required: 'Member Name can\'t be empty'
-    },
-    amount: {
+    numberofvotes:{
         type: Number,
-        required: 'Amount can\'t be empty'
-    },    
-    dateofpayment:{
-        type: Date
+        default: 0
     },
-    description:{
-        type: String
-    },
-    created:{
-        type: Date,
-        default: Date.now()
-    }
+}, {timestamp: true});
 
-});
-
-module.exports = { Dues };
+module.exports = { Vote };

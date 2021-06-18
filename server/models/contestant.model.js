@@ -4,12 +4,8 @@ var Contestant = mongoose.model('Contestant', {
     name: {
         type: String,
         required: 'Name can\'t be empty',
+        unique: true
     },
-    created:{
-        type: Date,
-        default: Date.now()
-    }
+}, { timestamp: true });
 
-});
-
-module.exports = { Attendance };
+module.exports = { Contestant };
