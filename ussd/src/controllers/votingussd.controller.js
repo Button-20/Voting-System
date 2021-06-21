@@ -35,49 +35,6 @@ menu.sessionConfig({
 
 ///////////////--------------USSD CODE STARTS--------------////////////////
 
-// menu.startState({
-//     run: async() => {
-//         await fetchaccount(menu.args.phoneNumber, (data)=> {
-//             menu.con('Welcome to Ahantaman Rural Bank. Please create a PIN before continuing' + '\nEnter 4 digits.')
-//         });
-//     },
-//     next: {
-//         '*\\d+': 'user.pin'
-//     }
-// })
-
-menu.state('user.pin',{
-    run: () => {
-        let pin = menu.val;
-        menu.session.set('pin', pin);
-        menu.con('Re-enter the 4 digits')
-    },
-    next: {
-        '*\\d+': 'user.verifypin'
-    }
-})
-
-menu.state('user.verifypin',{
-    run: async() => {
-        var vpin = Number(menu.val);
-        var pin = await menu.session.get('pin');
-        if(vpin == pin) {
-            await createpin(menu.args.phoneNumber, (data) => {
-                if (data.body.statusmessage == 'Success'){
-                    menu.con('Thank you for successfully creating a PIN. Enter zero(0) to continue')
-                }else{
-                    menu.end('Something went wrong. Please contact Admin.')
-                }
-
-            })
-        }else{
-            menu.con('Enter zero(0) to create PIN again')
-        }
-    },
-    next: {
-        '0': 'mainmenu',
-    }
-})
 
 ///////////////--------------MENU STARTS--------------////////////////
 
@@ -87,58 +44,72 @@ menu.startState({
             // if(data.body[0].hpin == 'false'){
             //     menu.con('Welcome to Ahantaman Rural Bank. Please create a PIN before continuing' + '\n\nEnter 4 digits.')
             // }else{
-                menu.con(`Welcome to GPRTU Collections, Dear ${name} your total contribution for this month is GHC ${amount}, 
-                Enter the amount you wish to pay today`)        
+                menu.con(`Welcome to [Name],
+                1. Vote
+                `)        
             // }
         });
     },
     next: {
-        '^[0-9]*$': 'payment'
+        '*\\d+': 'vote'
     }
 })
 
 
 ///////////////--------------DEPOSIT STARTS--------------////////////////
 
-menu.state('deposit.amount',{
+menu.state('vote',{
     run: () => {
-        let amount = menu.val;
-        menu.session.set('amount', amount);
-
-        let agent = await menu.session.get('agentaccountinfo');
-        let member = await menu.session.get('memberaccountinfo');
-        menu.con(`Dear ${agent}, you are making a deposit of GHS  ${amount}  into ${member}'s account` +
-        '\n1. Confirm' +
-        '\n2. Cancel'
-        )
+        menu.con(`Choose Category:
+        1. [Category Name]
+        2. [Category Name]
+        3. [Category Name]
+        4. [Category Name]
+        5. [Category Name]
+        `)
     },
     next: {
-        '1': 'confirm',
-        '2': 'deposit',
+        '*\\d+': 'vote.category',
     }
 })
 
-menu.state('confirm',{
-    run: async() => {
-        let data = {
-            code: "303",
-            type: "Contribution",
-            amount: await menu.session.get('amount'),
-            mobile: menu.args.phoneNumber,
-            network: "string",
-            token: "string",
-            service: "GPRTU USSD",
-            reference: "string",
-            order_id: generator.generate(7)
-        }
-    
-        await payment(data, (data) => {
-            if(data.body.status_message == 'success')
-                menu.end('You will receive a prompt to complete the payment process.')
-            else
-                menu.end('Server Error............')
-        })
+menu.state('vote.category',{
+    run: () => {
+        menu.con(`Choose your contestant:
+        1. [Contestant Name]
+        2. [Contestant Name]
+        3. [Contestant Name]
+        4. [Contestant Name]
+        5. [Contestant Name]
+        `)
+    },
+    next: {
+        '*\\d+': 'vote.contestant',
     }
+})
+
+menu.state('vote.contestant',{
+    run: () => {
+        menu.con(`Enter your preferred number of votes`)
+    },
+    next: {
+        '*\\d+': 'vote.number',
+    }
+})
+
+menu.state('vote.number',{
+    run: () => {
+        menu.con(`You are voting `)
+    },
+    next: {
+        '*\\d+': 'vote.confirm',
+    }
+})
+
+menu.state('vote.confirm',{
+    run: () => {
+        menu.end(`Follow`)
+    },
 })
 
 
